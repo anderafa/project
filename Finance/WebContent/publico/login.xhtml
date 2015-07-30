@@ -6,9 +6,9 @@
 
   <ui:composition template="/templates/principal.xhtml">
 	<ui:define name="corpo">
-		<div id="centro">		
+		<div id="centro" >		
 			<h:form>
-				<h:commandButton action="#{usuarioBean.novo}" value="Registre-se"/>
+				<h:commandButton action="#{usuarioBean.novo}" value="Criar uma Conta"/>
 			</h:form>
 			
 			<h:panelGroup rendered="#{!empty param.login_error}">
@@ -26,7 +26,7 @@
 				<tr><td align="right"><input type="checkbox" name="_spring_security_remember_me"/></td>
 					<td>Entrar automaticamente</td></tr>
 				<tr><td>&nbsp;</td>
-					<td><input type="submit" value="Entrar"/></td>
+					<td><input type="submit" value="Entrar no Sistema"/></td>
 				</tr>
 			</table>
 			<script>
