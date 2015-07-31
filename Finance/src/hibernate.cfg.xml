@@ -3,18 +3,21 @@
                                          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
  <session-factory name="PostgreSQLDS">
-
-	  <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>		
-	  <property name="connection.datasource">java:jboss/datasources/PostgreSQLDS</property> 
-	  <property name="hbm2ddl.auto">update</property>
-	  <property name="hibernate.show_sql">true</property>
-	  <property name="hibernate.format_sql">true</property>
-	  <property name="hibernate.generate_statistics">false</property>
-	  <property name="hibernate.c3p0.min_size">5</property>
-	  <property name="hibernate.c3p0.max_size">20</property>
-	  <property name="hibernate.c3p0.timeout">300</property>
-	  <property name="hibernate.c3p0.max_statements">50</property>
-	  <property name="current_session_context_class">thread</property>	
-	  <mapping class="br.com.sisnema.financeiroweb.model.Usuario"/>	
-   </session-factory>
+  <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+  <property name="connection.datasource">java:jboss/datasources/PostgreSQLDS</property>
+  <property name="hbm2ddl.auto">update</property>
+  <property name="hibernate.show_sql">true</property>
+  <property name="hibernate.format_sql">true</property>
+  <property name="hibernate.generate_statistics">false</property>
+  <property name="hibernate.c3p0.min_size">5</property>
+  <property name="hibernate.c3p0.max_size">20</property>
+  <property name="hibernate.c3p0.timeout">300</property>
+  <property name="hibernate.c3p0.max_statements">50</property>
+  <property name="current_session_context_class">thread</property>
+  <mapping class="br.com.sisnema.financeiroweb.model.Usuario"/>
+  <mapping class="br.com.sisnema.financeiroweb.model.Estado"/>
+  <mapping class="br.com.sisnema.financeiroweb.model.Municipio"/>
+  <mapping class="br.com.sisnema.financeiroweb.model.Colaborador"/>
+  <mapping class="br.com.sisnema.financeiroweb.model.Colaboradorendereco"/>
+ </session-factory>
 </hibernate-configuration>
