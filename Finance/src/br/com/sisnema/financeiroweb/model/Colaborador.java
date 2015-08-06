@@ -10,15 +10,22 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name = "colaborador", schema = "public")
 public class Colaborador implements java.io.Serializable {
 
-	private static final long serialVersionUID = -7235976336734339144L;
+	private static final long serialVersionUID = 1L;
 	private ColaboradorId id;
+	private Empresa empresa;
 	private String apelido;
 	private String razaoSocial;
 	private String nomeFantasia;
@@ -42,57 +49,12 @@ public class Colaborador implements java.io.Serializable {
 	private Date dataAtualizacao;
 	private Integer pais;
 	private boolean optanteSimplesNacional;
+	private Fornecedor fornecedor;
+	private Cliente cliente;
 	private Set<Colaboradorendereco> colaboradorenderecos = new HashSet<Colaboradorendereco>(0);
+	private Usuario usuario;	
 
-	public Colaborador() {
-	}
-
-	public Colaborador(ColaboradorId id, Date dataCriacao,
-			boolean contribuinte, boolean optanteSimplesNacional) {
-		this.id = id;
-		this.dataCriacao = dataCriacao;
-		this.contribuinte = contribuinte;
-		this.optanteSimplesNacional = optanteSimplesNacional;
-	}
-
-	public Colaborador(ColaboradorId id, String apelido, String razaoSocial,
-			String nomeFantasia, String tipoInscricao, String incricao,
-			String incricaoEstadual, String inscricaoMunicipal,
-			String inscricaoSuframa, Date dataCriacao, String email,
-			String observacao, String contato, Integer ramal,
-			String caixaPostal, boolean contribuinte, String tituloEleitor,
-			String carteiraMotorista, Date vencimentoCarteiraMotorista,
-			Integer atividadeComercial, String pis, Date dataAtualizacao,
-			Integer pais, boolean optanteSimplesNacional,
-			Set<Colaboradorendereco> colaboradorenderecos) {
-		this.id = id;
-		this.apelido = apelido;
-		this.razaoSocial = razaoSocial;
-		this.nomeFantasia = nomeFantasia;
-		this.tipoInscricao = tipoInscricao;
-		this.incricao = incricao;
-		this.incricaoEstadual = incricaoEstadual;
-		this.inscricaoMunicipal = inscricaoMunicipal;
-		this.inscricaoSuframa = inscricaoSuframa;
-		this.dataCriacao = dataCriacao;
-		this.email = email;
-		this.observacao = observacao;
-		this.contato = contato;
-		this.ramal = ramal;
-		this.caixaPostal = caixaPostal;
-		this.contribuinte = contribuinte;
-		this.tituloEleitor = tituloEleitor;
-		this.carteiraMotorista = carteiraMotorista;
-		this.vencimentoCarteiraMotorista = vencimentoCarteiraMotorista;
-		this.atividadeComercial = atividadeComercial;
-		this.pis = pis;
-		this.dataAtualizacao = dataAtualizacao;
-		this.pais = pais;
-		this.optanteSimplesNacional = optanteSimplesNacional;
-		this.colaboradorenderecos = colaboradorenderecos;
-	}
-
-	@EmbeddedId
+	@EmbeddedId	
 	@AttributeOverrides({
 			@AttributeOverride(name = "empresa", column = @Column(name = "empresa", nullable = false)),
 			@AttributeOverride(name = "codigo", column = @Column(name = "codigo", nullable = false)) })
@@ -102,6 +64,16 @@ public class Colaborador implements java.io.Serializable {
 
 	public void setId(ColaboradorId id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "empresa", nullable = false, insertable = false, updatable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Column(name = "apelido", length = 50)
@@ -314,6 +286,24 @@ public class Colaborador implements java.io.Serializable {
 		this.optanteSimplesNacional = optanteSimplesNacional;
 	}
 
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "colaborador")
+	public Fornecedor getFornecedor() {
+		return this.fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "colaborador")
+	public Cliente getCliente() {
+		return this.cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "colaborador")
 	public Set<Colaboradorendereco> getColaboradorenderecos() {
 		return this.colaboradorenderecos;
@@ -322,6 +312,15 @@ public class Colaborador implements java.io.Serializable {
 	public void setColaboradorenderecos(
 			Set<Colaboradorendereco> colaboradorenderecos) {
 		this.colaboradorenderecos = colaboradorenderecos;
+	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "colaborador")
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
@@ -339,6 +338,7 @@ public class Colaborador implements java.io.Serializable {
 				* result
 				+ ((carteiraMotorista == null) ? 0 : carteiraMotorista
 						.hashCode());
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime
 				* result
 				+ ((colaboradorenderecos == null) ? 0 : colaboradorenderecos
@@ -350,6 +350,9 @@ public class Colaborador implements java.io.Serializable {
 		result = prime * result
 				+ ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
+		result = prime * result
+				+ ((fornecedor == null) ? 0 : fornecedor.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((incricao == null) ? 0 : incricao.hashCode());
@@ -377,6 +380,7 @@ public class Colaborador implements java.io.Serializable {
 				+ ((tipoInscricao == null) ? 0 : tipoInscricao.hashCode());
 		result = prime * result
 				+ ((tituloEleitor == null) ? 0 : tituloEleitor.hashCode());
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		result = prime
 				* result
 				+ ((vencimentoCarteiraMotorista == null) ? 0
@@ -424,6 +428,13 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!carteiraMotorista.equals(other.carteiraMotorista)) {
 			return false;
 		}
+		if (cliente == null) {
+			if (other.cliente != null) {
+				return false;
+			}
+		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
 		if (colaboradorenderecos == null) {
 			if (other.colaboradorenderecos != null) {
 				return false;
@@ -460,6 +471,20 @@ public class Colaborador implements java.io.Serializable {
 				return false;
 			}
 		} else if (!email.equals(other.email)) {
+			return false;
+		}
+		if (empresa == null) {
+			if (other.empresa != null) {
+				return false;
+			}
+		} else if (!empresa.equals(other.empresa)) {
+			return false;
+		}
+		if (fornecedor == null) {
+			if (other.fornecedor != null) {
+				return false;
+			}
+		} else if (!fornecedor.equals(other.fornecedor)) {
 			return false;
 		}
 		if (id == null) {
@@ -556,6 +581,13 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!tituloEleitor.equals(other.tituloEleitor)) {
 			return false;
 		}
+		if (usuario == null) {
+			if (other.usuario != null) {
+				return false;
+			}
+		} else if (!usuario.equals(other.usuario)) {
+			return false;
+		}
 		if (vencimentoCarteiraMotorista == null) {
 			if (other.vencimentoCarteiraMotorista != null) {
 				return false;
@@ -566,6 +598,31 @@ public class Colaborador implements java.io.Serializable {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Colaborador [id=" + id + ", empresa=" + empresa + ", apelido="
+				+ apelido + ", razaoSocial=" + razaoSocial + ", nomeFantasia="
+				+ nomeFantasia + ", tipoInscricao=" + tipoInscricao
+				+ ", incricao=" + incricao + ", incricaoEstadual="
+				+ incricaoEstadual + ", inscricaoMunicipal="
+				+ inscricaoMunicipal + ", inscricaoSuframa=" + inscricaoSuframa
+				+ ", dataCriacao=" + dataCriacao + ", email=" + email
+				+ ", observacao=" + observacao + ", contato=" + contato
+				+ ", ramal=" + ramal + ", caixaPostal=" + caixaPostal
+				+ ", contribuinte=" + contribuinte + ", tituloEleitor="
+				+ tituloEleitor + ", carteiraMotorista=" + carteiraMotorista
+				+ ", vencimentoCarteiraMotorista="
+				+ vencimentoCarteiraMotorista + ", atividadeComercial="
+				+ atividadeComercial + ", pis=" + pis + ", dataAtualizacao="
+				+ dataAtualizacao + ", pais=" + pais
+				+ ", optanteSimplesNacional=" + optanteSimplesNacional
+				+ ", fornecedor=" + fornecedor + ", cliente=" + cliente
+				+ ", colaboradorenderecos=" + colaboradorenderecos
+				+ ", usuario=" + usuario + "]";
+	}
+	
+	
 	
 	
 

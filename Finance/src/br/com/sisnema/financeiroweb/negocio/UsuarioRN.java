@@ -1,9 +1,16 @@
 package br.com.sisnema.financeiroweb.negocio;
 
+import java.util.Date;
 import java.util.List;
 
+import br.com.sisnema.financeiroweb.action.ColaboradorRN;
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
+import br.com.sisnema.financeiroweb.model.ColaboradorId;
+import br.com.sisnema.financeiroweb.model.Empresa;
 import br.com.sisnema.financeiroweb.model.Usuario;
+import br.com.sisnema.financeiroweb.model.UsuarioId;
+import br.com.sisnema.financeiroweb.model.Usuariopermissao;
+import br.com.sisnema.financeiroweb.model.UsuariopermissaoId;
 import br.com.sisnema.financeiroweb.util.DAOException;
 import br.com.sisnema.financeiroweb.util.RNException;
 
@@ -11,42 +18,88 @@ public class UsuarioRN extends RN<Usuario> {
 	
 	public UsuarioRN() {
 		// Aqui informamos qual instancia sera armazenada no atributo
-		// genérico dao da classe pai RN.
-		// NÃO ENTENDEU, da um F3 sob a palavra SUPER
+		// genï¿½rico dao da classe pai RN.
+		// Nï¿½O ENTENDEU, da um F3 sob a palavra SUPER
 		super(new UsuarioDAO());
 	}
 
 	@Override
 	public void salvar(Usuario model) throws RNException {
-		if(model.getCodigo() == null  || model.getCodigo() ==  0){
+		if(model.getId() == null){
 			try {
 				
 				Usuario usuarioExistenteComLogin = buscarPorLogin(model.getLogin());
 				
 				if(usuarioExistenteComLogin != null){
-					throw new RNException("Já existe um usuário com o login informado.");
-				}
+					throw new RNException("Login ja existe!.");
+				}				
 				
-				model.getPermissao().add("ROLE_USUARIO");
+				Empresa emp = new Empresa();
+				
+				EmpresaRN empresaRN = new EmpresaRN();
+				
+				empresaRN.salvar(emp);
+				
+				ColaboradorId colId = new ColaboradorId();
+				colId.setEmpresa(emp.getCodigo());
+				colId.setCodigo(1);			
+				model.getColaborador().setId(colId);
+				model.getColaborador().setDataCriacao(new Date());
+				
+				ColaboradorRN colRN = new ColaboradorRN();				
+				
+				colRN.salvar(model.getColaborador());
+				
+				
+				UsuarioId userId = new UsuarioId();
+				userId.setCodigo(model.getColaborador().getId().getCodigo());
+				userId.setEmpresa(model.getColaborador().getId().getEmpresa());
+				
+				model.setId(userId);
+				model.setAtivo(true);
+				
+				UsuariopermissaoId userPerId = new UsuariopermissaoId();
+				userPerId.setEmpresa(emp.getCodigo());
+				userPerId.setUsuario(model.getId().getCodigo());
+				
+				Usuariopermissao userPer = new Usuariopermissao();
+				userPer.setPermissao("ROLE_USUARIO");									  
+				userPer.setUsuario(model);
+				userPer.setId(userPerId);
+				
+				UsuariopermissaoRN userPerRN = new UsuariopermissaoRN();
+				userPerRN.salvar(userPer);
+				
 				dao.salvar(model);		
 				
 			} catch (DAOException e) {
-				throw new RNException("Não foi possível inserir o usuario. Erro: "+e.getMessage());
-			}
-		} else {
-			try {
-				// Transformamos a variavel GENERICA dao em uma variavel
-				// mais especifica do tipo UsuarioDAO
-				UsuarioDAO userDAO = (UsuarioDAO) dao;
-				userDAO.atualizar(model);
-				
-				// versão reduzida dos comandos acima
-				// ((UsuarioDAO) dao).atualizar(model);
-				
-			} catch (DAOException e) {
-				throw new RNException("Não foi possível atualizar o usuario. Erro: "+e.getMessage());
+				throw new RNException("Nao foi possivel inserir o usuario. Erro: "+e.getMessage());
 			}
 		}
+		
+//		Usuariopermissao userPer = new Usuariopermissao();
+//		userPer.setPermissao("ROLE_USUARIO");
+//		userPer.setUsuario(model);
+//		
+//		UsuariopermissaoId userPerId = new UsuariopermissaoId();
+//		userPerId.setEmpresa(emp.getCodigo());
+//		userPerId.setUsuario(model.getId().getCodigo());
+//		
+//		userPer.setId(userPerId);		
+//		} else {
+//			try {
+//				// Transformamos a variavel GENERICA dao em uma variavel
+//				// mais especifica do tipo UsuarioDAO
+//				UsuarioDAO userDAO = (UsuarioDAO) dao;
+//				userDAO.atualizar(model);
+//				
+//				// versï¿½o reduzida dos comandos acima
+//				// ((UsuarioDAO) dao).atualizar(model);
+//				
+//			} catch (DAOException e) {
+//				throw new RNException("Nï¿½o foi possï¿½vel atualizar o usuario. Erro: "+e.getMessage());
+//			}
+//		}
 	}
 
 	@Override
@@ -54,7 +107,7 @@ public class UsuarioRN extends RN<Usuario> {
 		try {
 			dao.excluir(model);
 		} catch (DAOException e) {
-			throw new RNException("Não foi possível excluir o usuario. Erro: "+e.getMessage());
+			throw new RNException("Nï¿½o foi possï¿½vel excluir o usuario. Erro: "+e.getMessage());
 		}
 	}
 
@@ -70,11 +123,10 @@ public class UsuarioRN extends RN<Usuario> {
 	
 
 	public Usuario buscarPorLogin(String login){
-		// DownCasting: dao é muito generico e nao sabe dos métodos
+		// DownCasting: dao ï¿½ muito generico e nao sabe dos mï¿½todos
 		//			    especificos de UsuarioDAO
-		UsuarioDAO userDao = (UsuarioDAO) dao;  
-		return userDao.buscarPorLogin(login);
-//		return ((UsuarioDAO) dao).buscarPorLogin(login);
+		
+		return ((UsuarioDAO) dao).buscarPorLogin(login);
 	}
 	
 }

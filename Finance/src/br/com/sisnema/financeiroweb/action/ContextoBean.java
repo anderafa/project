@@ -12,6 +12,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import br.com.sisnema.financeiroweb.model.Usuario;
+import br.com.sisnema.financeiroweb.model.UsuarioId;
 import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 import br.com.sisnema.financeiroweb.util.RNException;
 
@@ -26,14 +27,10 @@ public class ContextoBean {
 
 	private Usuario	usuarioLogado = null;
 	
-
-	private Locale localizacao 	  = null;
-	private List<Locale> idiomas;
-
 	public Usuario getUsuarioLogado() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ExternalContext external = context.getExternalContext();
-		String login = external.getRemoteUser();
+		String login = external.getRemoteUser();	
 
 		if (this.usuarioLogado == null || !login.equals(this.usuarioLogado.getLogin())) {
 
@@ -41,10 +38,14 @@ public class ContextoBean {
 				UsuarioRN usuarioRN = new UsuarioRN();
 				this.usuarioLogado = usuarioRN.buscarPorLogin(login);
 				
-
-//				String[] info = this.usuarioLogado.getIdioma().split("_");
-//				Locale locale = new Locale(info[0], info[1]);
-//				context.getViewRoot().setLocale(locale);
+				Usuario user = new Usuario();
+				
+				UsuarioId userId = new UsuarioId();
+				userId.setCodigo(1);
+				userId.setEmpresa(1);
+				
+				user.setId(userId);
+				this.usuarioLogado = (Usuario) usuarioRN.pesquisar(user);
 			}
 		}
 		return usuarioLogado;
@@ -52,37 +53,8 @@ public class ContextoBean {
 	
 	public void setUsuarioLogado(Usuario usuario) {
 		this.usuarioLogado = usuario;
-	}	
-	
-
-	
-	public Locale getLocaleUsuario() {
-		if (localizacao == null) {
-//			Usuario usuario = getUsuarioLogado();
-//			String idioma = usuario.getIdioma();
-//			String[] info = idioma.split("_");
-//			localizacao = new Locale(info[0], info[1]);
-		}		
-		
-		return localizacao;
 	}
 	
-	
-	/**
-	 * Retorna uma lista de Locale (idiomas suportados pelo sistema, 
-	 * definido no arquivo faces-config.xml)
-	 */
-	public List<Locale> getIdiomas() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		Iterator<Locale> locales = context.getApplication().getSupportedLocales();
-		idiomas = new ArrayList<Locale>();
-		
-		while(locales.hasNext()) {
-			idiomas.add(locales.next());
-		}
-		
-		return idiomas;
-	}
 	
 	/**
 	 * Altera o idioma default do usuario na base de dados

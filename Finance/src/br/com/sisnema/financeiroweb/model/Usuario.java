@@ -1,174 +1,94 @@
 package br.com.sisnema.financeiroweb.model;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.NaturalId;
-
 @Entity
-public class Usuario implements Serializable {
+@Table(name = "usuario", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = "login"))
+public class Usuario implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue
-	private Integer codigo;
-	private String nome;
-	private String email;
-
-	@NaturalId
-	private String login;
-	private String senha;		
+	private static final long serialVersionUID = 3544094885382363875L;
+	private UsuarioId id;
+	private Colaborador colaborador;
 	private boolean ativo;
+	private String email;
+	private String login;
+	private String senha;
+	private Usuariopermissao usuariopermissao;	
 
-	@ElementCollection(targetClass = String.class)
-	@JoinTable(name = "usuariopermissao", 
-	    uniqueConstraints = { @UniqueConstraint(columnNames = {"usuario", "permissao" }) },
-	    joinColumns = @JoinColumn(name = "usuario"))
-	
-	@Column(name = "permissao", length = 50)
-	private Set<String> permissao = new HashSet<String>();
-
-	public Integer getCodigo() {
-		return codigo;
+	@EmbeddedId
+	@AttributeOverrides({
+			@AttributeOverride(name = "codigo", column = @Column(name = "codigo", nullable = false)),
+			@AttributeOverride(name = "empresa", column = @Column(name = "empresa", nullable = false)) })
+	public UsuarioId getId() {
+		return this.id;
 	}
 
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
+	public void setId(UsuarioId id) {
+		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	public Colaborador getColaborador() {
+		return this.colaborador;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setColaborador(Colaborador colaborador) {
+		this.colaborador = colaborador;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
+	@Column(name = "ativo", nullable = false)
 	public boolean isAtivo() {
-		return ativo;
+		return this.ativo;
 	}
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
 
-	public Set<String> getPermissao() {
-		return permissao;
+	@Column(name = "email", length = 200)
+	public String getEmail() {
+		return this.email;
 	}
 
-	public void setPermissao(Set<String> permissao) {
-		this.permissao = permissao;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (ativo ? 1231 : 1237);
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result
-				+ ((permissao == null) ? 0 : permissao.hashCode());
-		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
-		return result;
+	@Column(name = "login", unique = true, length = 50)
+	public String getLogin() {
+		return this.login;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Usuario)) {
-			return false;
-		}
-		Usuario other = (Usuario) obj;
-		if (ativo != other.ativo) {
-			return false;
-		}
-		if (codigo == null) {
-			if (other.codigo != null) {
-				return false;
-			}
-		} else if (!codigo.equals(other.codigo)) {
-			return false;
-		}
-		if (email == null) {
-			if (other.email != null) {
-				return false;
-			}
-		} else if (!email.equals(other.email)) {
-			return false;
-		}
-		if (login == null) {
-			if (other.login != null) {
-				return false;
-			}
-		} else if (!login.equals(other.login)) {
-			return false;
-		}
-		if (nome == null) {
-			if (other.nome != null) {
-				return false;
-			}
-		} else if (!nome.equals(other.nome)) {
-			return false;
-		}
-		if (permissao == null) {
-			if (other.permissao != null) {
-				return false;
-			}
-		} else if (!permissao.equals(other.permissao)) {
-			return false;
-		}
-		if (senha == null) {
-			if (other.senha != null) {
-				return false;
-			}
-		} else if (!senha.equals(other.senha)) {
-			return false;
-		}
-		return true;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
-		
+	@Column(name = "senha", length = 15)
+	public String getSenha() {
+		return this.senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "usuario")
+	public Usuariopermissao getUsuariopermissao() {
+		return this.usuariopermissao;
+	}
+
+	public void setUsuariopermissao(Usuariopermissao usuariopermissao) {
+		this.usuariopermissao = usuariopermissao;
+	}
+
 }

@@ -1,11 +1,11 @@
 package br.com.sisnema.financeiroweb.action;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import br.com.sisnema.financeiroweb.model.Colaborador;
 import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 import br.com.sisnema.financeiroweb.util.RNException;
@@ -16,17 +16,28 @@ public class UsuarioBean extends ActionBean {
 
 	private Usuario usuario = new Usuario();
 	private String confirmaSenha;
+	Colaborador col = new Colaborador();	
+	
 	
 	private List<Usuario> lista;
 	private String destinoSalvar;	
 
 	public String novo() {
-		destinoSalvar = "usuarioSucesso";
+		destinoSalvar = "usuarioSucesso";			
 		usuario = new Usuario();
-		usuario.setAtivo(true);
+		col = new Colaborador();		
+		
 		return "usuario";
+	}	
+
+	public Colaborador getCol() {
+		return col;
 	}
-	
+
+	public void setCol(Colaborador col) {
+		this.col = col;
+	}
+
 	public String editar() {
 		confirmaSenha = usuario.getSenha();
 		return "/publico/usuario";
@@ -48,15 +59,15 @@ public class UsuarioBean extends ActionBean {
 
 	public String atribuiPermissao(Usuario usuario, String permissao) {
 
-		this.usuario = usuario;
-
-		Set<String> permissoes = this.usuario.getPermissao();
-
-		if (permissoes.contains(permissao)) {
-			permissoes.remove(permissao);
-		} else {
-			permissoes.add(permissao);
-		}
+//		this.usuario = usuario;
+//
+//		String permissoes = this.usuario.getUsuariopermissao().getPermissao();
+//
+//		if (permissoes.contains(permissao)) {
+//			permissoes.remove(permissao);
+//		} else {
+//			permissoes.add(permissao);
+//		}
 		return null;
 	}
 	
@@ -68,8 +79,9 @@ public class UsuarioBean extends ActionBean {
 			if (!usuario.getSenha().equals(confirmaSenha)) {
 				apresentarMenssagemDeErro("Senha confirmada incorretamente");
 	 			return null;
-			}
-		
+			}			
+			
+			usuario.setColaborador(col);			
 			UsuarioRN urn = new UsuarioRN();
 			urn.salvar(usuario);
 			
@@ -115,6 +127,4 @@ public class UsuarioBean extends ActionBean {
 	public void setDestinoSalvar(String destinoSalvar) {
 		this.destinoSalvar = destinoSalvar;
 	}
-
-	
 }

@@ -20,7 +20,8 @@
 			<jdbc-user-service data-source-ref="financeiroDataSource"
 				authorities-by-username-query="SELECT u.login, p.permissao 
 											 FROM usuario u, usuariopermissao p 
-											WHERE u.codigo = p.usuario 
+											WHERE u.empresa = p.empresa 
+											  AND u.codigo = p.usuario 
 											  AND u.login = ?"
 				users-by-username-query="SELECT login, senha, ativo 
 									   FROM usuario 

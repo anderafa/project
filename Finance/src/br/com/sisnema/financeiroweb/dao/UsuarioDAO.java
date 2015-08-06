@@ -2,7 +2,8 @@ package br.com.sisnema.financeiroweb.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.util.DAOException;
@@ -16,11 +17,11 @@ public class UsuarioDAO extends DAO<Usuario> {
 	
 	public void atualizar(Usuario model) throws DAOException {
 		
-		if(model.getPermissao() == null || model.getPermissao().size() == 0){
-			Usuario usuarioPermissao = obterPorId(model);
-			model.setPermissao(usuarioPermissao.getPermissao());
-			sessao.evict(usuarioPermissao);
-		}
+//		if(model.getUsuariopermissao() == null || model.getUsuariopermissao(). == 0){
+//			Usuario usuarioPermissao = obterPorId(model);
+//			model.setPermissao(usuarioPermissao.getPermissao());
+//			sessao.evict(usuarioPermissao);
+//		}
 		
 		sessao.update(model);
 	}
@@ -33,7 +34,8 @@ public class UsuarioDAO extends DAO<Usuario> {
 
 	@Override
 	public Usuario obterPorId(Usuario filtro) {
-		return (Usuario) sessao.get(Usuario.class, filtro.getCodigo());
+//		return (Usuario) sessao.get(Usuario.class, filtro.getCodigo());
+		return null;
 	}
 
 	@Override
@@ -42,11 +44,22 @@ public class UsuarioDAO extends DAO<Usuario> {
 	}
 	
 	public Usuario buscarPorLogin(String login){
-		String hql = "select u from Usuario u where u.login = :login";
-		Query consulta = sessao.createQuery(hql);
-		consulta.setString("login", login);
+		Criteria crit = sessao.createCriteria(Usuario.class);
+		crit.add(Restrictions.eq("login",login));	
 		
-		return (Usuario) consulta.uniqueResult();
+		 return (Usuario) crit.uniqueResult();
+
+
+		
+
+			
+//		return (Usuario) sessao.ge
+		
+//		String hql = "select u from Usuario u where u.login = :login";
+//		Query consulta = sessao.createQuery(hql);
+//		consulta.setString("login", login);
+//		
+//		return (Usuario) consulta.uniqueResult();
 	}
 }
 
