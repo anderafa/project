@@ -4,13 +4,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -23,51 +21,61 @@ import javax.persistence.TemporalType;
 @Table(name = "colaborador", schema = "public")
 public class Colaborador implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private ColaboradorId id;
+	private static final long serialVersionUID = 7587491926057371125L;
+	private Integer colCodigo;
 	private Empresa empresa;
 	private String apelido;
-	private String razaoSocial;
-	private String nomeFantasia;
-	private String tipoInscricao;
-	private String incricao;
-	private String incricaoEstadual;
-	private String inscricaoMunicipal;
-	private String inscricaoSuframa;
-	private Date dataCriacao;
-	private String email;
-	private String observacao;
+	private Integer atividadecomercial;
+	private String caixapostal;
+	private String carteiramotorista;
 	private String contato;
-	private Integer ramal;
-	private String caixaPostal;
 	private boolean contribuinte;
-	private String tituloEleitor;
-	private String carteiraMotorista;
-	private Date vencimentoCarteiraMotorista;
-	private Integer atividadeComercial;
+	private Date dataatualizacao;
+	private Date datacriacao;
+	private String email;
+	private String incricao;
+	private String incricaoestadual;
+	private String inscricaomunicipal;
+	private String inscricaosuframa;
+	private String nomefantasia;
+	private String observacao;
+	private boolean optantesimplesnacional;
 	private String pis;
-	private Date dataAtualizacao;
-	private Integer pais;
-	private boolean optanteSimplesNacional;
-	private Fornecedor fornecedor;
+	private Integer ramal;
+	private String razaosocial;
+	private String tipoinscricao;
+	private String tituloeleitor;
+	private Date vencimentocarteiramotorista;
 	private Cliente cliente;
+	private Fornecedor fornecedor;
 	private Set<Colaboradorendereco> colaboradorenderecos = new HashSet<Colaboradorendereco>(0);
-	private Usuario usuario;	
+	private Usuario usuario;
 
-	@EmbeddedId	
-	@AttributeOverrides({
-			@AttributeOverride(name = "empresa", column = @Column(name = "empresa", nullable = false)),
-			@AttributeOverride(name = "codigo", column = @Column(name = "codigo", nullable = false)) })
-	public ColaboradorId getId() {
-		return this.id;
+	public Colaborador() {
 	}
 
-	public void setId(ColaboradorId id) {
-		this.id = id;
+	public Colaborador(Integer colCodigo, Empresa empresa, boolean contribuinte,
+			Date datacriacao, boolean optantesimplesnacional) {
+		this.colCodigo = colCodigo;
+		this.empresa = empresa;
+		this.contribuinte = contribuinte;
+		this.datacriacao = datacriacao;
+		this.optantesimplesnacional = optantesimplesnacional;
+	}	
+
+	@Id
+	@GeneratedValue
+	@Column(name = "colCodigo", unique = true, nullable = false)
+	public Integer getColCodigo() {
+		return this.colCodigo;
+	}
+
+	public void setColCodigo(Integer colCodigo) {
+		this.colCodigo = colCodigo;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "empresa", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "empresa", nullable = false)
 	public Empresa getEmpresa() {
 		return this.empresa;
 	}
@@ -85,95 +93,31 @@ public class Colaborador implements java.io.Serializable {
 		this.apelido = apelido;
 	}
 
-	@Column(name = "razaoSocial", length = 80)
-	public String getRazaoSocial() {
-		return this.razaoSocial;
+	@Column(name = "atividadecomercial")
+	public Integer getAtividadecomercial() {
+		return this.atividadecomercial;
 	}
 
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
+	public void setAtividadecomercial(Integer atividadecomercial) {
+		this.atividadecomercial = atividadecomercial;
 	}
 
-	@Column(name = "nomeFantasia", length = 80)
-	public String getNomeFantasia() {
-		return this.nomeFantasia;
+	@Column(name = "caixapostal", length = 15)
+	public String getCaixapostal() {
+		return this.caixapostal;
 	}
 
-	public void setNomeFantasia(String nomeFantasia) {
-		this.nomeFantasia = nomeFantasia;
+	public void setCaixapostal(String caixapostal) {
+		this.caixapostal = caixapostal;
 	}
 
-	@Column(name = "tipoInscricao", length = 4)
-	public String getTipoInscricao() {
-		return this.tipoInscricao;
+	@Column(name = "carteiramotorista", length = 11)
+	public String getCarteiramotorista() {
+		return this.carteiramotorista;
 	}
 
-	public void setTipoInscricao(String tipoInscricao) {
-		this.tipoInscricao = tipoInscricao;
-	}
-
-	@Column(name = "incricao", length = 14)
-	public String getIncricao() {
-		return this.incricao;
-	}
-
-	public void setIncricao(String incricao) {
-		this.incricao = incricao;
-	}
-
-	@Column(name = "incricaoEstadual", length = 20)
-	public String getIncricaoEstadual() {
-		return this.incricaoEstadual;
-	}
-
-	public void setIncricaoEstadual(String incricaoEstadual) {
-		this.incricaoEstadual = incricaoEstadual;
-	}
-
-	@Column(name = "inscricaoMunicipal", length = 20)
-	public String getInscricaoMunicipal() {
-		return this.inscricaoMunicipal;
-	}
-
-	public void setInscricaoMunicipal(String inscricaoMunicipal) {
-		this.inscricaoMunicipal = inscricaoMunicipal;
-	}
-
-	@Column(name = "inscricaoSuframa", length = 20)
-	public String getInscricaoSuframa() {
-		return this.inscricaoSuframa;
-	}
-
-	public void setInscricaoSuframa(String inscricaoSuframa) {
-		this.inscricaoSuframa = inscricaoSuframa;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "dataCriacao", nullable = false, length = 13)
-	public Date getDataCriacao() {
-		return this.dataCriacao;
-	}
-
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	@Column(name = "email", length = 200)
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Column(name = "observacao")
-	public String getObservacao() {
-		return this.observacao;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
+	public void setCarteiramotorista(String carteiramotorista) {
+		this.carteiramotorista = carteiramotorista;
 	}
 
 	@Column(name = "contato", length = 50)
@@ -185,24 +129,6 @@ public class Colaborador implements java.io.Serializable {
 		this.contato = contato;
 	}
 
-	@Column(name = "ramal")
-	public Integer getRamal() {
-		return this.ramal;
-	}
-
-	public void setRamal(Integer ramal) {
-		this.ramal = ramal;
-	}
-
-	@Column(name = "caixaPostal", length = 15)
-	public String getCaixaPostal() {
-		return this.caixaPostal;
-	}
-
-	public void setCaixaPostal(String caixaPostal) {
-		this.caixaPostal = caixaPostal;
-	}
-
 	@Column(name = "contribuinte", nullable = false)
 	public boolean isContribuinte() {
 		return this.contribuinte;
@@ -212,41 +138,96 @@ public class Colaborador implements java.io.Serializable {
 		this.contribuinte = contribuinte;
 	}
 
-	@Column(name = "tituloEleitor", length = 11)
-	public String getTituloEleitor() {
-		return this.tituloEleitor;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dataatualizacao", length = 29)
+	public Date getDataatualizacao() {
+		return this.dataatualizacao;
 	}
 
-	public void setTituloEleitor(String tituloEleitor) {
-		this.tituloEleitor = tituloEleitor;
-	}
-
-	@Column(name = "carteiraMotorista", length = 11)
-	public String getCarteiraMotorista() {
-		return this.carteiraMotorista;
-	}
-
-	public void setCarteiraMotorista(String carteiraMotorista) {
-		this.carteiraMotorista = carteiraMotorista;
+	public void setDataatualizacao(Date dataatualizacao) {
+		this.dataatualizacao = dataatualizacao;
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "vencimentoCarteiraMotorista", length = 13)
-	public Date getVencimentoCarteiraMotorista() {
-		return this.vencimentoCarteiraMotorista;
+	@Column(name = "datacriacao", nullable = false, length = 13)
+	public Date getDatacriacao() {
+		return this.datacriacao;
 	}
 
-	public void setVencimentoCarteiraMotorista(Date vencimentoCarteiraMotorista) {
-		this.vencimentoCarteiraMotorista = vencimentoCarteiraMotorista;
+	public void setDatacriacao(Date datacriacao) {
+		this.datacriacao = datacriacao;
 	}
 
-	@Column(name = "atividadeComercial")
-	public Integer getAtividadeComercial() {
-		return this.atividadeComercial;
+	@Column(name = "email", length = 200)
+	public String getEmail() {
+		return this.email;
 	}
 
-	public void setAtividadeComercial(Integer atividadeComercial) {
-		this.atividadeComercial = atividadeComercial;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Column(name = "incricao", length = 14)
+	public String getIncricao() {
+		return this.incricao;
+	}
+
+	public void setIncricao(String incricao) {
+		this.incricao = incricao;
+	}
+
+	@Column(name = "incricaoestadual", length = 20)
+	public String getIncricaoestadual() {
+		return this.incricaoestadual;
+	}
+
+	public void setIncricaoestadual(String incricaoestadual) {
+		this.incricaoestadual = incricaoestadual;
+	}
+
+	@Column(name = "inscricaomunicipal", length = 20)
+	public String getInscricaomunicipal() {
+		return this.inscricaomunicipal;
+	}
+
+	public void setInscricaomunicipal(String inscricaomunicipal) {
+		this.inscricaomunicipal = inscricaomunicipal;
+	}
+
+	@Column(name = "inscricaosuframa", length = 20)
+	public String getInscricaosuframa() {
+		return this.inscricaosuframa;
+	}
+
+	public void setInscricaosuframa(String inscricaosuframa) {
+		this.inscricaosuframa = inscricaosuframa;
+	}
+
+	@Column(name = "nomefantasia", length = 80)
+	public String getNomefantasia() {
+		return this.nomefantasia;
+	}
+
+	public void setNomefantasia(String nomefantasia) {
+		this.nomefantasia = nomefantasia;
+	}
+
+	@Column(name = "observacao")
+	public String getObservacao() {
+		return this.observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
+	@Column(name = "optantesimplesnacional", nullable = false)
+	public boolean isOptantesimplesnacional() {
+		return this.optantesimplesnacional;
+	}
+
+	public void setOptantesimplesnacional(boolean optantesimplesnacional) {
+		this.optantesimplesnacional = optantesimplesnacional;
 	}
 
 	@Column(name = "pis", length = 11)
@@ -258,41 +239,50 @@ public class Colaborador implements java.io.Serializable {
 		this.pis = pis;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dataAtualizacao", length = 29)
-	public Date getDataAtualizacao() {
-		return this.dataAtualizacao;
+	@Column(name = "ramal")
+	public Integer getRamal() {
+		return this.ramal;
 	}
 
-	public void setDataAtualizacao(Date dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
+	public void setRamal(Integer ramal) {
+		this.ramal = ramal;
 	}
 
-	@Column(name = "pais")
-	public Integer getPais() {
-		return this.pais;
+	@Column(name = "razaosocial", length = 80)
+	public String getRazaosocial() {
+		return this.razaosocial;
 	}
 
-	public void setPais(Integer pais) {
-		this.pais = pais;
+	public void setRazaosocial(String razaosocial) {
+		this.razaosocial = razaosocial;
 	}
 
-	@Column(name = "optanteSimplesNacional", nullable = false)
-	public boolean isOptanteSimplesNacional() {
-		return this.optanteSimplesNacional;
+	@Column(name = "tipoinscricao", length = 4)
+	public String getTipoinscricao() {
+		return this.tipoinscricao;
 	}
 
-	public void setOptanteSimplesNacional(boolean optanteSimplesNacional) {
-		this.optanteSimplesNacional = optanteSimplesNacional;
+	public void setTipoinscricao(String tipoinscricao) {
+		this.tipoinscricao = tipoinscricao;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "colaborador")
-	public Fornecedor getFornecedor() {
-		return this.fornecedor;
+	@Column(name = "tituloeleitor", length = 11)
+	public String getTituloeleitor() {
+		return this.tituloeleitor;
 	}
 
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
+	public void setTituloeleitor(String tituloeleitor) {
+		this.tituloeleitor = tituloeleitor;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "vencimentocarteiramotorista", length = 13)
+	public Date getVencimentocarteiramotorista() {
+		return this.vencimentocarteiramotorista;
+	}
+
+	public void setVencimentocarteiramotorista(Date vencimentocarteiramotorista) {
+		this.vencimentocarteiramotorista = vencimentocarteiramotorista;
 	}
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "colaborador")
@@ -302,6 +292,15 @@ public class Colaborador implements java.io.Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "colaborador")
+	public Fornecedor getFornecedor() {
+		return this.fornecedor;
+	}
+
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "colaborador")
@@ -330,15 +329,17 @@ public class Colaborador implements java.io.Serializable {
 		result = prime * result + ((apelido == null) ? 0 : apelido.hashCode());
 		result = prime
 				* result
-				+ ((atividadeComercial == null) ? 0 : atividadeComercial
+				+ ((atividadecomercial == null) ? 0 : atividadecomercial
 						.hashCode());
 		result = prime * result
-				+ ((caixaPostal == null) ? 0 : caixaPostal.hashCode());
+				+ ((caixapostal == null) ? 0 : caixapostal.hashCode());
 		result = prime
 				* result
-				+ ((carteiraMotorista == null) ? 0 : carteiraMotorista
+				+ ((carteiramotorista == null) ? 0 : carteiramotorista
 						.hashCode());
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result
+				+ ((colCodigo == null) ? 0 : colCodigo.hashCode());
 		result = prime
 				* result
 				+ ((colaboradorenderecos == null) ? 0 : colaboradorenderecos
@@ -346,45 +347,43 @@ public class Colaborador implements java.io.Serializable {
 		result = prime * result + ((contato == null) ? 0 : contato.hashCode());
 		result = prime * result + (contribuinte ? 1231 : 1237);
 		result = prime * result
-				+ ((dataAtualizacao == null) ? 0 : dataAtualizacao.hashCode());
+				+ ((dataatualizacao == null) ? 0 : dataatualizacao.hashCode());
 		result = prime * result
-				+ ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
+				+ ((datacriacao == null) ? 0 : datacriacao.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
 		result = prime * result
 				+ ((fornecedor == null) ? 0 : fornecedor.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((incricao == null) ? 0 : incricao.hashCode());
 		result = prime
 				* result
-				+ ((incricaoEstadual == null) ? 0 : incricaoEstadual.hashCode());
+				+ ((incricaoestadual == null) ? 0 : incricaoestadual.hashCode());
 		result = prime
 				* result
-				+ ((inscricaoMunicipal == null) ? 0 : inscricaoMunicipal
+				+ ((inscricaomunicipal == null) ? 0 : inscricaomunicipal
 						.hashCode());
 		result = prime
 				* result
-				+ ((inscricaoSuframa == null) ? 0 : inscricaoSuframa.hashCode());
+				+ ((inscricaosuframa == null) ? 0 : inscricaosuframa.hashCode());
 		result = prime * result
-				+ ((nomeFantasia == null) ? 0 : nomeFantasia.hashCode());
+				+ ((nomefantasia == null) ? 0 : nomefantasia.hashCode());
 		result = prime * result
 				+ ((observacao == null) ? 0 : observacao.hashCode());
-		result = prime * result + (optanteSimplesNacional ? 1231 : 1237);
-		result = prime * result + ((pais == null) ? 0 : pais.hashCode());
+		result = prime * result + (optantesimplesnacional ? 1231 : 1237);
 		result = prime * result + ((pis == null) ? 0 : pis.hashCode());
 		result = prime * result + ((ramal == null) ? 0 : ramal.hashCode());
 		result = prime * result
-				+ ((razaoSocial == null) ? 0 : razaoSocial.hashCode());
+				+ ((razaosocial == null) ? 0 : razaosocial.hashCode());
 		result = prime * result
-				+ ((tipoInscricao == null) ? 0 : tipoInscricao.hashCode());
+				+ ((tipoinscricao == null) ? 0 : tipoinscricao.hashCode());
 		result = prime * result
-				+ ((tituloEleitor == null) ? 0 : tituloEleitor.hashCode());
+				+ ((tituloeleitor == null) ? 0 : tituloeleitor.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		result = prime
 				* result
-				+ ((vencimentoCarteiraMotorista == null) ? 0
-						: vencimentoCarteiraMotorista.hashCode());
+				+ ((vencimentocarteiramotorista == null) ? 0
+						: vencimentocarteiramotorista.hashCode());
 		return result;
 	}
 
@@ -407,25 +406,25 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!apelido.equals(other.apelido)) {
 			return false;
 		}
-		if (atividadeComercial == null) {
-			if (other.atividadeComercial != null) {
+		if (atividadecomercial == null) {
+			if (other.atividadecomercial != null) {
 				return false;
 			}
-		} else if (!atividadeComercial.equals(other.atividadeComercial)) {
+		} else if (!atividadecomercial.equals(other.atividadecomercial)) {
 			return false;
 		}
-		if (caixaPostal == null) {
-			if (other.caixaPostal != null) {
+		if (caixapostal == null) {
+			if (other.caixapostal != null) {
 				return false;
 			}
-		} else if (!caixaPostal.equals(other.caixaPostal)) {
+		} else if (!caixapostal.equals(other.caixapostal)) {
 			return false;
 		}
-		if (carteiraMotorista == null) {
-			if (other.carteiraMotorista != null) {
+		if (carteiramotorista == null) {
+			if (other.carteiramotorista != null) {
 				return false;
 			}
-		} else if (!carteiraMotorista.equals(other.carteiraMotorista)) {
+		} else if (!carteiramotorista.equals(other.carteiramotorista)) {
 			return false;
 		}
 		if (cliente == null) {
@@ -433,6 +432,13 @@ public class Colaborador implements java.io.Serializable {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (colCodigo == null) {
+			if (other.colCodigo != null) {
+				return false;
+			}
+		} else if (!colCodigo.equals(other.colCodigo)) {
 			return false;
 		}
 		if (colaboradorenderecos == null) {
@@ -452,18 +458,18 @@ public class Colaborador implements java.io.Serializable {
 		if (contribuinte != other.contribuinte) {
 			return false;
 		}
-		if (dataAtualizacao == null) {
-			if (other.dataAtualizacao != null) {
+		if (dataatualizacao == null) {
+			if (other.dataatualizacao != null) {
 				return false;
 			}
-		} else if (!dataAtualizacao.equals(other.dataAtualizacao)) {
+		} else if (!dataatualizacao.equals(other.dataatualizacao)) {
 			return false;
 		}
-		if (dataCriacao == null) {
-			if (other.dataCriacao != null) {
+		if (datacriacao == null) {
+			if (other.datacriacao != null) {
 				return false;
 			}
-		} else if (!dataCriacao.equals(other.dataCriacao)) {
+		} else if (!datacriacao.equals(other.datacriacao)) {
 			return false;
 		}
 		if (email == null) {
@@ -487,13 +493,6 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!fornecedor.equals(other.fornecedor)) {
 			return false;
 		}
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
 		if (incricao == null) {
 			if (other.incricao != null) {
 				return false;
@@ -501,32 +500,32 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!incricao.equals(other.incricao)) {
 			return false;
 		}
-		if (incricaoEstadual == null) {
-			if (other.incricaoEstadual != null) {
+		if (incricaoestadual == null) {
+			if (other.incricaoestadual != null) {
 				return false;
 			}
-		} else if (!incricaoEstadual.equals(other.incricaoEstadual)) {
+		} else if (!incricaoestadual.equals(other.incricaoestadual)) {
 			return false;
 		}
-		if (inscricaoMunicipal == null) {
-			if (other.inscricaoMunicipal != null) {
+		if (inscricaomunicipal == null) {
+			if (other.inscricaomunicipal != null) {
 				return false;
 			}
-		} else if (!inscricaoMunicipal.equals(other.inscricaoMunicipal)) {
+		} else if (!inscricaomunicipal.equals(other.inscricaomunicipal)) {
 			return false;
 		}
-		if (inscricaoSuframa == null) {
-			if (other.inscricaoSuframa != null) {
+		if (inscricaosuframa == null) {
+			if (other.inscricaosuframa != null) {
 				return false;
 			}
-		} else if (!inscricaoSuframa.equals(other.inscricaoSuframa)) {
+		} else if (!inscricaosuframa.equals(other.inscricaosuframa)) {
 			return false;
 		}
-		if (nomeFantasia == null) {
-			if (other.nomeFantasia != null) {
+		if (nomefantasia == null) {
+			if (other.nomefantasia != null) {
 				return false;
 			}
-		} else if (!nomeFantasia.equals(other.nomeFantasia)) {
+		} else if (!nomefantasia.equals(other.nomefantasia)) {
 			return false;
 		}
 		if (observacao == null) {
@@ -536,14 +535,7 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!observacao.equals(other.observacao)) {
 			return false;
 		}
-		if (optanteSimplesNacional != other.optanteSimplesNacional) {
-			return false;
-		}
-		if (pais == null) {
-			if (other.pais != null) {
-				return false;
-			}
-		} else if (!pais.equals(other.pais)) {
+		if (optantesimplesnacional != other.optantesimplesnacional) {
 			return false;
 		}
 		if (pis == null) {
@@ -560,25 +552,25 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!ramal.equals(other.ramal)) {
 			return false;
 		}
-		if (razaoSocial == null) {
-			if (other.razaoSocial != null) {
+		if (razaosocial == null) {
+			if (other.razaosocial != null) {
 				return false;
 			}
-		} else if (!razaoSocial.equals(other.razaoSocial)) {
+		} else if (!razaosocial.equals(other.razaosocial)) {
 			return false;
 		}
-		if (tipoInscricao == null) {
-			if (other.tipoInscricao != null) {
+		if (tipoinscricao == null) {
+			if (other.tipoinscricao != null) {
 				return false;
 			}
-		} else if (!tipoInscricao.equals(other.tipoInscricao)) {
+		} else if (!tipoinscricao.equals(other.tipoinscricao)) {
 			return false;
 		}
-		if (tituloEleitor == null) {
-			if (other.tituloEleitor != null) {
+		if (tituloeleitor == null) {
+			if (other.tituloeleitor != null) {
 				return false;
 			}
-		} else if (!tituloEleitor.equals(other.tituloEleitor)) {
+		} else if (!tituloeleitor.equals(other.tituloeleitor)) {
 			return false;
 		}
 		if (usuario == null) {
@@ -588,41 +580,16 @@ public class Colaborador implements java.io.Serializable {
 		} else if (!usuario.equals(other.usuario)) {
 			return false;
 		}
-		if (vencimentoCarteiraMotorista == null) {
-			if (other.vencimentoCarteiraMotorista != null) {
+		if (vencimentocarteiramotorista == null) {
+			if (other.vencimentocarteiramotorista != null) {
 				return false;
 			}
-		} else if (!vencimentoCarteiraMotorista
-				.equals(other.vencimentoCarteiraMotorista)) {
+		} else if (!vencimentocarteiramotorista
+				.equals(other.vencimentocarteiramotorista)) {
 			return false;
 		}
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Colaborador [id=" + id + ", empresa=" + empresa + ", apelido="
-				+ apelido + ", razaoSocial=" + razaoSocial + ", nomeFantasia="
-				+ nomeFantasia + ", tipoInscricao=" + tipoInscricao
-				+ ", incricao=" + incricao + ", incricaoEstadual="
-				+ incricaoEstadual + ", inscricaoMunicipal="
-				+ inscricaoMunicipal + ", inscricaoSuframa=" + inscricaoSuframa
-				+ ", dataCriacao=" + dataCriacao + ", email=" + email
-				+ ", observacao=" + observacao + ", contato=" + contato
-				+ ", ramal=" + ramal + ", caixaPostal=" + caixaPostal
-				+ ", contribuinte=" + contribuinte + ", tituloEleitor="
-				+ tituloEleitor + ", carteiraMotorista=" + carteiraMotorista
-				+ ", vencimentoCarteiraMotorista="
-				+ vencimentoCarteiraMotorista + ", atividadeComercial="
-				+ atividadeComercial + ", pis=" + pis + ", dataAtualizacao="
-				+ dataAtualizacao + ", pais=" + pais
-				+ ", optanteSimplesNacional=" + optanteSimplesNacional
-				+ ", fornecedor=" + fornecedor + ", cliente=" + cliente
-				+ ", colaboradorenderecos=" + colaboradorenderecos
-				+ ", usuario=" + usuario + "]";
-	}
-	
-	
 	
 	
 

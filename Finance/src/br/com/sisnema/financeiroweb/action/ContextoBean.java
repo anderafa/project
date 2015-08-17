@@ -1,8 +1,5 @@
 package br.com.sisnema.financeiroweb.action;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
@@ -12,7 +9,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import br.com.sisnema.financeiroweb.model.Usuario;
-import br.com.sisnema.financeiroweb.model.UsuarioId;
 import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 import br.com.sisnema.financeiroweb.util.RNException;
 
@@ -36,16 +32,18 @@ public class ContextoBean {
 
 			if (login != null) {
 				UsuarioRN usuarioRN = new UsuarioRN();
+				
 				this.usuarioLogado = usuarioRN.buscarPorLogin(login);
+//				this.usuarioLogado = (Usuario) usuarioRN.pesquisar(null);
 				
-				Usuario user = new Usuario();
-				
-				UsuarioId userId = new UsuarioId();
-				userId.setCodigo(1);
-				userId.setEmpresa(1);
-				
-				user.setId(userId);
-				this.usuarioLogado = (Usuario) usuarioRN.pesquisar(user);
+//				Usuario user = new Usuario();
+//				
+//				UsuarioId userId = new UsuarioId();
+//				userId.setUsuCodigo(1);
+//				userId.setUsuEmpresa(1);
+//				
+//				user.setId(userId);
+//				this.usuarioLogado = (Usuario) usuarioRN.pesquisar(user);
 			}
 		}
 		return usuarioLogado;

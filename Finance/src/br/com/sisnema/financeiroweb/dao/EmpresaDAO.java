@@ -20,7 +20,7 @@ public class EmpresaDAO extends DAO<Empresa> {
 
 	@Override
 	public Empresa obterPorId(Empresa filtro) {		
-		return (Empresa) sessao.get(Empresa.class, filtro.getCodigo());
+		return (Empresa) sessao.get(Empresa.class, filtro.getCodempresa());
 	}
 
 	@Override

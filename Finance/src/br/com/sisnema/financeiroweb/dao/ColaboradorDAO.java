@@ -3,7 +3,6 @@ package br.com.sisnema.financeiroweb.dao;
 import java.util.List;
 
 import br.com.sisnema.financeiroweb.model.Colaborador;
-import br.com.sisnema.financeiroweb.negocio.EmpresaRN;
 import br.com.sisnema.financeiroweb.util.DAOException;
 
 public class ColaboradorDAO extends DAO<Colaborador> {
@@ -21,7 +20,7 @@ public class ColaboradorDAO extends DAO<Colaborador> {
 
 	@Override
 	public Colaborador obterPorId(Colaborador filtro) {		
-		return (Colaborador) sessao.get(Colaborador.class, filtro.getId());
+		return (Colaborador) sessao.get(Colaborador.class, filtro);
 	}
 
 	@Override

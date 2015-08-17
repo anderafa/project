@@ -5,12 +5,9 @@ import java.util.List;
 
 import br.com.sisnema.financeiroweb.action.ColaboradorRN;
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
-import br.com.sisnema.financeiroweb.model.ColaboradorId;
 import br.com.sisnema.financeiroweb.model.Empresa;
 import br.com.sisnema.financeiroweb.model.Usuario;
-import br.com.sisnema.financeiroweb.model.UsuarioId;
 import br.com.sisnema.financeiroweb.model.Usuariopermissao;
-import br.com.sisnema.financeiroweb.model.UsuariopermissaoId;
 import br.com.sisnema.financeiroweb.util.DAOException;
 import br.com.sisnema.financeiroweb.util.RNException;
 
@@ -24,8 +21,8 @@ public class UsuarioRN extends RN<Usuario> {
 	}
 
 	@Override
-	public void salvar(Usuario model) throws RNException {
-		if(model.getId() == null){
+	public void salvar(Usuario model) throws RNException {		
+		if(model.getCodUsuario() == null  || model.getCodUsuario() ==  0){
 			try {
 				
 				Usuario usuarioExistenteComLogin = buscarPorLogin(model.getLogin());
@@ -38,34 +35,25 @@ public class UsuarioRN extends RN<Usuario> {
 				
 				EmpresaRN empresaRN = new EmpresaRN();
 				
-				empresaRN.salvar(emp);
+				empresaRN.salvar(emp);				
 				
-				ColaboradorId colId = new ColaboradorId();
-				colId.setEmpresa(emp.getCodigo());
-				colId.setCodigo(1);			
-				model.getColaborador().setId(colId);
-				model.getColaborador().setDataCriacao(new Date());
+				model.getColaborador().setEmpresa(emp);				
+				model.getColaborador().setDatacriacao(new Date());
 				
 				ColaboradorRN colRN = new ColaboradorRN();				
 				
-				colRN.salvar(model.getColaborador());
+				colRN.salvar(model.getColaborador());				
 				
-				
-				UsuarioId userId = new UsuarioId();
-				userId.setCodigo(model.getColaborador().getId().getCodigo());
-				userId.setEmpresa(model.getColaborador().getId().getEmpresa());
-				
-				model.setId(userId);
-				model.setAtivo(true);
-				
-				UsuariopermissaoId userPerId = new UsuariopermissaoId();
-				userPerId.setEmpresa(emp.getCodigo());
-				userPerId.setUsuario(model.getId().getCodigo());
+				//model.setCodUsuario(model.getColaborador().getColCodigo());
+				model.setColaborador(model.getColaborador());
+				model.setEmpresa(emp.getCodempresa());
+				model.setAtivo(true);				
 				
 				Usuariopermissao userPer = new Usuariopermissao();
 				userPer.setPermissao("ROLE_USUARIO");									  
 				userPer.setUsuario(model);
-				userPer.setId(userPerId);
+				userPer.setUspCodigo(model.getCodUsuario());
+				userPer.setEmpresa(emp.getCodempresa());
 				
 				UsuariopermissaoRN userPerRN = new UsuariopermissaoRN();
 				userPerRN.salvar(userPer);

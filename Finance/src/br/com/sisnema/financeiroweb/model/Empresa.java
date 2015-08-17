@@ -15,21 +15,27 @@ import javax.persistence.Table;
 @Table(name = "empresa", schema = "public")
 public class Empresa implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private int codigo;
+	private static final long serialVersionUID = 8963587796669294215L;
+	private Integer codempresa;
 	private Set<Colaborador> colaboradors = new HashSet<Colaborador>(0);
-	private Set<Filial> filials = new HashSet<Filial>(0);	
+	private Set<Filial> filials = new HashSet<Filial>(0);
+
+	public Empresa() {
+	}
+
+	public Empresa(Integer codempresa) {
+		this.codempresa = codempresa;
+	}	
 
 	@Id
 	@GeneratedValue
-	@Column(name = "codigo", unique = true, nullable = false)
-	public int getCodigo() {
-		return this.codigo;
+	@Column(name = "codempresa", unique = true, nullable = false)
+	public Integer getCodempresa() {
+		return this.codempresa;
 	}
 
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+	public void setCodempresa(Integer codempresa) {
+		this.codempresa = codempresa;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
@@ -54,7 +60,8 @@ public class Empresa implements java.io.Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + codigo;
+		result = prime * result
+				+ ((codempresa == null) ? 0 : codempresa.hashCode());
 		result = prime * result
 				+ ((colaboradors == null) ? 0 : colaboradors.hashCode());
 		result = prime * result + ((filials == null) ? 0 : filials.hashCode());
@@ -73,7 +80,11 @@ public class Empresa implements java.io.Serializable {
 			return false;
 		}
 		Empresa other = (Empresa) obj;
-		if (codigo != other.codigo) {
+		if (codempresa == null) {
+			if (other.codempresa != null) {
+				return false;
+			}
+		} else if (!codempresa.equals(other.codempresa)) {
 			return false;
 		}
 		if (colaboradors == null) {
@@ -92,10 +103,6 @@ public class Empresa implements java.io.Serializable {
 		}
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Empresa [codigo=" + codigo + ", colaboradors=" + colaboradors
-				+ ", filials=" + filials + "]";
-	}
+	
+	
 }
