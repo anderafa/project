@@ -44,9 +44,7 @@ public class Filial implements java.io.Serializable {
 	public Filial() {
 	}
 
-	public Filial(Integer codFilial, Empresa empresa, String razaosocial,
-			boolean situacao) {
-		this.codFilial = codFilial;
+	public Filial(Empresa empresa, String razaosocial,boolean situacao) {		
 		this.empresa = empresa;
 		this.razaosocial = razaosocial;
 		this.situacao = situacao;

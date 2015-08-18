@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Parameter;
 
 @Entity
@@ -76,6 +77,7 @@ public class Usuario implements java.io.Serializable {
 		this.email = email;
 	}
 
+	@NaturalId
 	@Column(name = "login", unique = true, length = 50)
 	public String getLogin() {
 		return this.login;

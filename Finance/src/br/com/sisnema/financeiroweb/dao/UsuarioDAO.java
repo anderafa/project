@@ -2,6 +2,9 @@ package br.com.sisnema.financeiroweb.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+
 import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.util.DAOException;
 
@@ -42,7 +45,12 @@ public class UsuarioDAO extends DAO<Usuario> {
 	
 	public Usuario buscarPorLogin(String login){
 		
-		return (Usuario) sessao.createCriteria(Usuario.class).uniqueResult();
+		Criteria crit = sessao.createCriteria(Usuario.class);
+		return (Usuario) crit.add(Restrictions.eq("login", login)).uniqueResult();
+		
+		//Create sessao.createCriteria(Usuario.class).add(Restrictions.eq("login", login);
+		
+		 
 		
 //		return (Usuario) sessao.createSQLQuery("SELECT * FROM USUARIO").uniqueResult();		
 

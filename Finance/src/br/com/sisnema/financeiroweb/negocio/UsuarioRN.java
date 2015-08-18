@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.sisnema.financeiroweb.action.ColaboradorRN;
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
 import br.com.sisnema.financeiroweb.model.Empresa;
+import br.com.sisnema.financeiroweb.model.Filial;
 import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.model.Usuariopermissao;
 import br.com.sisnema.financeiroweb.util.DAOException;
@@ -35,7 +36,12 @@ public class UsuarioRN extends RN<Usuario> {
 				
 				EmpresaRN empresaRN = new EmpresaRN();
 				
-				empresaRN.salvar(emp);				
+				empresaRN.salvar(emp);
+				
+				Filial fil = new Filial(emp, model.getColaborador().getNomefantasia(), true);
+				
+				FilialRN filialRN = new FilialRN();
+				filialRN.salvar(fil);
 				
 				model.getColaborador().setEmpresa(emp);				
 				model.getColaborador().setDatacriacao(new Date());
@@ -49,11 +55,8 @@ public class UsuarioRN extends RN<Usuario> {
 				model.setEmpresa(emp.getCodempresa());
 				model.setAtivo(true);				
 				
-				Usuariopermissao userPer = new Usuariopermissao();
-				userPer.setPermissao("ROLE_USUARIO");									  
-				userPer.setUsuario(model);
-				userPer.setUspCodigo(model.getCodUsuario());
-				userPer.setEmpresa(emp.getCodempresa());
+				Usuariopermissao userPer = new Usuariopermissao(model,emp.getCodempresa(),"ROLE_USUARIO");
+				userPer.setUspCodigo(model.getCodUsuario());				
 				
 				UsuariopermissaoRN userPerRN = new UsuariopermissaoRN();
 				userPerRN.salvar(userPer);
