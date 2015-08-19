@@ -10,12 +10,13 @@ public class ColaboradorDAO extends DAO<Colaborador> {
 	@Override
 	public void salvar(Colaborador model) throws DAOException {
 		sessao.saveOrUpdate(model);
-
 	}
 
 	@Override
 	public void excluir(Colaborador model) throws DAOException {
 		sessao.delete(model);
+		sessao.flush();
+		
 	}
 
 	@Override

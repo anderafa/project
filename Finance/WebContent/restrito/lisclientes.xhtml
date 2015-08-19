@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags"
+      xmlns:p="http://primefaces.org/ui"> 
+
+  <ui:composition template="/templates/interna.xhtml">
+  	 <ui:define name="titulo">Clientes</ui:define>
+	 <ui:define name="corpo">
+		<h:form>			
+			
+			<h:panelGrid columns="1"  >			
+				<p:commandButton value="Novo" action="#{clienteBean.novo()}"/>
+			</h:panelGrid>
+			
+			<p:dataTable id="listacliente" value="#{clienteBean.lista}" var="cliente">			
+			
+				<p:column width="60">
+					<f:facet name="header">Razão Social</f:facet>
+					<h:outputText value="#{cliente.colaborador.razaosocial}" />
+				</p:column>
+				
+				<p:column width="60">
+					<f:facet name="header">Fantasia</f:facet>
+					<h:outputText value="#{cliente.colaborador.nomefantasia}" />
+				</p:column>
+				
+				<p:column width="60">
+					<f:facet name="header">Tipo</f:facet>
+					<h:outputText value="#{cliente.colaborador.tipoinscricao}" />
+				</p:column>
+				
+				<p:column width="60">
+					<f:facet name="header">Incrição</f:facet>
+					<h:outputText value="#{cliente.colaborador.incricao}" />
+				</p:column>
+				
+				<p:column width="60">
+					<f:facet name="header">Contato</f:facet>
+					<h:outputText value="#{cliente.colaborador.contato}" />
+				</p:column>
+						
+				<p:column width="10">
+					<p:commandLink action="#{clienteBean.editar}" >
+						<h:graphicImage library="imagens" name="editar16.png" />
+						<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{colaborador}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column width="10">
+					<p:commandLink action="#{clienteBean.excluir}" update="listacliente" onclick="if (!confirm('Confirma a exclusão do cliente #{col}?')) return false;">
+						<h:graphicImage library="imagens" name="excluir16.png" />
+						<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{colaborador}" /> 
+					</p:commandLink>
+				</p:column>
+				
+				
+			</p:dataTable>
+			
+		</h:form>
+	</ui:define>
+  </ui:composition>
+</html>

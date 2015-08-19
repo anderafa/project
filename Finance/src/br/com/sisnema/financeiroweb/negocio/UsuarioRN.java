@@ -3,7 +3,6 @@ package br.com.sisnema.financeiroweb.negocio;
 import java.util.Date;
 import java.util.List;
 
-import br.com.sisnema.financeiroweb.action.ColaboradorRN;
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
 import br.com.sisnema.financeiroweb.model.Empresa;
 import br.com.sisnema.financeiroweb.model.Filial;

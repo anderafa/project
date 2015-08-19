@@ -16,7 +16,7 @@ public class UsuarioBean extends ActionBean {
 
 	private Usuario usuario = new Usuario();
 	private String confirmaSenha;
-	Colaborador col = new Colaborador();	
+	private Colaborador col = new Colaborador();	
 	
 	
 	private List<Usuario> lista;

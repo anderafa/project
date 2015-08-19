@@ -1,11 +1,9 @@
-package br.com.sisnema.financeiroweb.action;
+package br.com.sisnema.financeiroweb.negocio;
 
 import java.util.List;
 
 import br.com.sisnema.financeiroweb.dao.ColaboradorDAO;
-import br.com.sisnema.financeiroweb.dao.IDAO;
 import br.com.sisnema.financeiroweb.model.Colaborador;
-import br.com.sisnema.financeiroweb.negocio.RN;
 import br.com.sisnema.financeiroweb.util.DAOException;
 import br.com.sisnema.financeiroweb.util.RNException;
 
