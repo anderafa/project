@@ -10,29 +10,80 @@
 <ui:composition>
 	<sec:ifAnyGranted roles="ROLE_USUARIO">
 		<h:form id="menu">
-			<table width="100%">
-			<tr>
-				<p:menubar>
-					<p:submenu label="Geral" >						
-						<p:menuitem value="Usuários" url="usuarios.jsf" />
-					</p:submenu>				
-				</p:menubar>
-				
-				<td align="left">
-					<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR">
-						<h:commandLink action="/admin/principal" title="Administrativo">
-							<h:graphicImage library="imagens" name="administrativo16.png" />
-						</h:commandLink>
-					</sec:ifAnyGranted>
-					<h:commandLink action="/restrito/principal" title="Principal">
-						<h:graphicImage library="imagens" name="principal16.png" />
-					</h:commandLink>
-					<h:outputLink value="javascript:void(0)" onclick="document.location='#{request.contextPath}/j_spring_security_logout'" title="Sair">
-						<h:graphicImage library="imagens" name="logout16.png" />
-					</h:outputLink>
-				</td>
-			</tr>
-			</table>
+			<p:toolbar>
+				<f:facet name="right">
+					<p:panelGrid columns="3">
+						<p:outputLabel value="#{contextoBean.usuarioLogado.login}" />
+						<p:outputLabel value="#{contextoBean.usuarioLogado.empresa}" />
+						
+						<h:outputLink value="javascript:void(0)" onclick="document.location='#{request.contextPath}/j_spring_security_logout'" title="Sair"> 
+							<h:graphicImage library="imagens" name="logout16.png" />
+						</h:outputLink>
+			
+					</p:panelGrid>
+				</f:facet>
+
+			</p:toolbar>
+
+			<div id="lateral">
+				<div id="menu">
+					
+					<h3 class="link-titulo"><a href="principal.jsf">Principal</a></h3>
+					<br/>	
+
+					<h3 class="link-titulo">Cadastros</h3>
+					<ul class="box">
+						<li><a href="#">Clientes</a></li>
+						<li><a href="#">Fornecedores</a></li>
+						<li><a href="usuarios.jsf">Usuários</a></li>
+					</ul>
+
+					<h3 class="link-titulo">Movimentação</h3>
+					<ul class="box">
+						<li><a href="#">Receber</a></li>
+						<li><a href="#">Pagar</a></li>
+						<!-- mais links -->
+					</ul>
+
+					<h3 class="link-titulo">Consultas</h3>
+					<ul class="box">
+						<li><a href="#">Receber</a></li>
+						<li><a href="#">Pagar</a></li>
+						<!-- mais links -->
+					</ul>
+
+					<h3 class="link-titulo">Configurações</h3>
+					<ul class="box">
+						<li><a href="#">Propriedades</a></li>
+					</ul>
+				</div>
+			</div>
+
+
+
+			<!--         <table width="100%"> -->
+			<!-- 			<tr>			 -->
+			<!-- 			<p:menubar> -->
+			<!-- 					<p:submenu label="Geral" >						 -->
+			<!-- 						<p:menuitem value="Usuários" url="usuarios.jsf" /> -->
+			<!-- 					</p:submenu>				 -->
+			<!-- 				</p:menubar> -->
+
+			<!-- 				<td align="left"> -->
+			<!-- 					<sec:ifAnyGranted roles="ROLE_ADMINISTRADOR"> -->
+			<!-- 						<h:commandLink action="/admin/principal" title="Administrativo"> -->
+			<!-- 							<h:graphicImage library="imagens" name="administrativo16.png" /> -->
+			<!-- 						</h:commandLink> -->
+			<!-- 					</sec:ifAnyGranted> -->
+			<!-- 					<h:commandLink action="/restrito/principal" title="Principal"> -->
+			<!-- 						<h:graphicImage library="imagens" name="principal16.png" /> -->
+			<!-- 					</h:commandLink> -->
+			<!-- 					<h:outputLink value="javascript:void(0)" onclick="document.location='#{request.contextPath}/j_spring_security_logout'" title="Sair"> -->
+			<!-- 						<h:graphicImage library="imagens" name="logout16.png" /> -->
+			<!-- 					</h:outputLink> -->
+			<!-- 				</td> -->
+			<!-- 			</tr> -->
+			<!-- 			</table>				 -->
 		</h:form>
 	</sec:ifAnyGranted>
 </ui:composition>

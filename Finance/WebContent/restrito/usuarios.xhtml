@@ -22,11 +22,11 @@
 				</h:column>
 				<h:column>
 					<f:facet name="header">Código</f:facet>
-					<h:outputText value="#{usuario.codigo}" />
+					<h:outputText value="#{usuario.codUsuario}" />
 				</h:column>				
 				<h:column>
 					<f:facet name="header">Nome</f:facet>
-					<h:outputText value="#{usuario.nome}" />
+					<h:outputText value="#{usuario.colaborador.nomefantasia}" />
 				</h:column>
 				<h:column>
 					<f:facet name="header">e-Mail</f:facet>
@@ -34,13 +34,13 @@
 				</h:column>
 				
 				
-				<h:column>
-					<f:facet name="header">Permissões</f:facet>
-					<h:commandLink action="#{usuarioBean.atribuiPermissao(usuario, 'ROLE_ADMINISTRADOR')}" title="Permissão Administrador">
-						<h:graphicImage library="imagens" name="ROLE_ADMINISTRADOR_#{usuario.permissao.contains('ROLE_ADMINISTRADOR')}.png" style="border:0"/>
-					</h:commandLink>
+<!-- 				<h:column> -->
+<!-- 					<f:facet name="header">Permissões</f:facet> -->
+<!-- 					<h:commandLink action="#{usuarioBean.atribuiPermissao(usuario, 'ROLE_ADMINISTRADOR')}" title="Permissão Administrador"> -->
+<!-- 						<h:graphicImage library="imagens" name="ROLE_ADMINISTRADOR_#{usuario.permissao.contains('ROLE_ADMINISTRADOR')}.png" style="border:0"/> -->
+<!-- 					</h:commandLink> -->
 					
-				</h:column>
+<!-- 				</h:column> -->
 				
 				
 				
@@ -52,7 +52,7 @@
 					</h:commandLink>
 				</h:column>
 				<h:column>
-					<h:commandLink action="#{usuarioBean.excluir}" onclick="if (!confirm('Confirma a exclusão do usuário #{usuario.nome}?')) return false;">
+					<h:commandLink action="#{usuarioBean.excluir}" onclick="if (!confirm('Confirma a exclusão do usuário #{usuario.colaborador.nomefantasia}?')) return false;">
 						<h:graphicImage library="imagens" name="excluir16.png" style="border:0"/>
 						<f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{usuario}"/>
 					</h:commandLink>
