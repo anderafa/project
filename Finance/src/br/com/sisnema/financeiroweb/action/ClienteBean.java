@@ -1,9 +1,13 @@
 package br.com.sisnema.financeiroweb.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+
+import org.primefaces.context.RequestContext;
 
 import br.com.sisnema.financeiroweb.model.Cliente;
 import br.com.sisnema.financeiroweb.negocio.ClienteRN;
@@ -46,6 +50,17 @@ public class ClienteBean extends ActionBean {
 	public void editar() {
 		
 	}
+	
+	public void openDialog() {		
+	  
+	  Map<String,Object> options = new HashMap<String, Object>();
+      options.put("modal", true);
+      options.put("draggable", false);
+      options.put("resizable", false);
+      options.put("contentHeight", 320); 
+      
+      RequestContext.getCurrentInstance().openDialog("cadcliente", options, null);      
+  }
 
 	public Cliente getCliente() {
 		return cliente;
