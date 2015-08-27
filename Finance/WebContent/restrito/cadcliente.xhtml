@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<h:form>
+	
+	
+	<h:panelGrid columns="1">
+		<p:commandButton value="Salvar" actionListener="#{clienteBean.salvar()}" />		
+	</h:panelGrid>
+	
+	<h:messages />
+	
+	<h:panelGrid columns="2">
+		<p:outputLabel for="inscricao" value="Tipo" />
+		<p:selectOneRadio id="inscricao" value="#{clienteBean.colaborador.tipoinscricao}">
+            <f:selectItem itemLabel="CPF" itemValue="CPF"  />
+            <f:selectItem itemLabel="CNPJ" itemValue="CNPJ" />   
+            
+            <p:ajax update="edtInc" event="change"/> 
+        </p:selectOneRadio>
+		
+		<h:outputLabel value="Inscrição" for="edtInc" />
+		<p:inputMask id="edtInc" value="#{clienteBean.colaborador.incricao}" mask="#{clienteBean.mascaraInscricao}"/>
+
+		<h:outputLabel value="Apelido" for="edtApe" />
+		<p:inputText id="edtApe" size="40" maxlength="50"
+			value="#{clienteBean.colaborador.apelido}" />
+
+		<h:outputLabel value="Razão Social" for="edtRaz" />
+		<p:inputText id="edtRaz" size="40" maxlength="80"
+			value="#{clienteBean.colaborador.razaosocial}" />
+
+		<h:outputLabel value="Nome Fantasia" for="edtFan" />
+		<p:inputText id="edtFan" size="40" maxlength="80"
+			value="#{clienteBean.colaborador.nomefantasia}" />
+
+		<h:outputLabel value="Caixa Postal" for="edtCxa" />
+		<p:inputText id="edtCxa" size="15" maxlength="15"
+			value="#{clienteBean.colaborador.caixapostal}" />
+
+		<h:outputLabel value="Cadastro" for="dataCadastro" />
+		<p:inputText id="dataCadastro"
+			value="#{clienteBean.colaborador.datacriacao}" />
+
+		<h:outputLabel value="e-mail" for="edtema" />
+		<p:inputText id="edtema" size="40" maxlength="200"
+			value="#{clienteBean.colaborador.email}" />
+
+		<h:outputLabel value="Observação" for="edtObs" />
+		<p:inputTextarea id="edtObs"
+			value="#{clienteBean.colaborador.observacao}" />
+
+
+	</h:panelGrid>
+</h:form>
+
+
+</html>

@@ -9,50 +9,69 @@
       
   <ui:composition template="/templates/interna.xhtml">  	
 	 <ui:define name="corpo">
-		<h:form>			
+		<h:form id="cadclientes">			
 			
 			<h:panelGrid columns="2">
-				<p:commandButton  value="Novo" actionListener="#{clienteBean.openDialog()}" />
+				<p:commandButton value="Novo" actionListener="#{clienteBean.openDialog()}">
+					<p:ajax  event="dialogReturn" update=":cadclientes:listacliente"/>				
+				</p:commandButton>
 			</h:panelGrid>
 			
-			<p:dataTable id="listacliente" value="#{clienteBean.lista}" var="cliente">			
+			<p:dataTable id="listacliente" value="#{clienteBean.lista}" var="cliente" emptyMessage="Nenhum Cliente"
+			             rows="15"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20"  
+                         currentPageReportTemplate="Página {currentPage} de {totalPages}"
+						 paginatorPosition="bottom" >			
 			
-				<p:column width="60">
-					<f:facet name="header">Razão Social</f:facet>
-					<h:outputText value="#{cliente.colaborador.razaosocial}" />
-				</p:column>
-				
-				<p:column width="60">
-					<f:facet name="header">Fantasia</f:facet>
-					<h:outputText value="#{cliente.colaborador.nomefantasia}" />
-				</p:column>
-				
-				<p:column width="60">
+			
+				<p:column width="4">
 					<f:facet name="header">Tipo</f:facet>
 					<h:outputText value="#{cliente.colaborador.tipoinscricao}" />
 				</p:column>
 				
-				<p:column width="60">
+				<p:column width="24">
 					<f:facet name="header">Incrição</f:facet>
-					<h:outputText value="#{cliente.colaborador.incricao}" />
+					<h:outputText value="#{cliente.colaborador.incricao}" converter="converters.inscricaoConverter"/> 								
+										
 				</p:column>
 				
-				<p:column width="60">
+				<p:column width="40">
+					<f:facet name="header">Razão Social</f:facet>
+					<h:outputText value="#{cliente.colaborador.razaosocial}" />
+				</p:column>
+				
+				<p:column width="40">
+					<f:facet name="header">Nome Fantasia</f:facet>
+					<h:outputText value="#{cliente.colaborador.nomefantasia}" />
+				</p:column>
+				
+				<p:column width="40">
+					<f:facet name="header">Apelido</f:facet>
+					<h:outputText value="#{cliente.colaborador.nomefantasia}" />
+				</p:column>
+				
+				<p:column width="30">
 					<f:facet name="header">Contato</f:facet>
 					<h:outputText value="#{cliente.colaborador.contato}" />
 				</p:column>
+				
+				<p:column width="30">
+					<f:facet name="header">Cadastro</f:facet>
+					<h:outputText value="#{cliente.colaborador.datacriacao}">
+					<f:convertDateTime pattern="#{formatUtil.getFormatdata()}" /> </h:outputText>						 
+				</p:column>
 						
-				<p:column width="10">
+				<p:column width="2">
 					<p:commandLink action="#{clienteBean.editar}" >
 						<h:graphicImage library="imagens" name="editar16.png" />
-						<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{colaborador}" />
+						<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{cliente}" />
 					</p:commandLink>
-				</p:column>
-				
-				<p:column width="10">
-					<p:commandLink action="#{clienteBean.excluir}" update="listacliente" onclick="if (!confirm('Confirma a exclusão do cliente #{col}?')) return false;">
+				<p:spacer width="10"  />
+					<p:commandLink action="#{clienteBean.excluir}" update="listacliente" onclick="if (!confirm('Confirma a exclusão do cliente?')) return false;">
 						<h:graphicImage library="imagens" name="excluir16.png" />
-						<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{colaborador}" /> 
+						<f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{cliente}" /> 
 					</p:commandLink>
 				</p:column>
 				

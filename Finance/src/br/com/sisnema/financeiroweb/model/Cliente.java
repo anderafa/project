@@ -33,7 +33,6 @@ public class Cliente implements java.io.Serializable {
 
 	@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "colaborador"))
 	@Id
-	@GeneratedValue(generator = "generator")
 	@Column(name = "codColaborador", unique = true, nullable = false)
 	public Integer getCodColaborador() {
 		return this.codColaborador;

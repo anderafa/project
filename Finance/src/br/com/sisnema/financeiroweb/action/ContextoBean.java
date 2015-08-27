@@ -1,16 +1,12 @@
 package br.com.sisnema.financeiroweb.action;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.context.RequestContext;
 
 import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
@@ -37,7 +33,8 @@ public class ContextoBean {
 			if (login != null) {
 				UsuarioRN usuarioRN = new UsuarioRN();
 				
-				this.usuarioLogado = usuarioRN.buscarPorLogin(login);
+				this.usuarioLogado = usuarioRN.buscarPorLogin(login);				
+				
 //				this.usuarioLogado = (Usuario) usuarioRN.pesquisar(null);
 				
 //				Usuario user = new Usuario();
